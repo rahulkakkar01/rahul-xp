@@ -1,0 +1,3448 @@
+@import "tailwindcss";
+
+/* ================================================================================================
+                                              GLOBAL STYLES
+ ================================================================================================== */
+
+
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  overflow: hidden;
+  font-family: Tahoma, sans-serif;
+}
+
+
+/* ================================================================================================
+                                             crt overlay effect
+ ================================================================================================== */
+
+/* CRT WRAPPER */
+.crt {
+  position: relative;
+  overflow: hidden;
+}
+
+
+/* CRT GRID OVERLAY */
+.crt::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+
+  background-image:
+    linear-gradient(rgba(0,0,0,0.25) 0.5px, transparent 0px),
+    linear-gradient(to right, rgba(0,0,0,0.25) 0.5px, transparent 0px);
+
+  background-size: 2px 2px; /* size of squares */
+
+  pointer-events: none;
+  z-index: 10;
+}
+
+/* MOVING VERTICAL SWEEP LINE */
+.crt::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to bottom,
+    transparent 0%,
+    rgba(255, 255, 255, 0.08) 50%,
+    transparent 100%
+  );
+  animation: crtSweep 6s linear infinite;
+  pointer-events: none;
+  z-index: 11;
+}
+
+@keyframes crtSweep {
+  0% {
+    transform: translateY(-100%);
+  }
+  100% {
+    transform: translateY(100%);
+  }
+}
+
+/* ================================================================================================
+                                             boot screen
+ ================================================================================================== */
+
+
+.xp-boot {
+  width: 100vw;
+  height: 100vh;
+  background: #000;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.boot-logo {
+  width: 420px;
+  margin-bottom: 5px;
+}
+/* Boot Fade Overlay */
+.boot-fade {
+  position: absolute;
+  inset: 0;
+  background: black;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.8s ease-in-out;
+  z-index: 200;
+}
+
+.boot-fade.active {
+  opacity: 1;
+}
+.xp-title {
+  font-size: 56px;
+  font-weight: bold;
+  letter-spacing: -1px;
+}
+
+.xp-title span {
+  color: #ff6a00;
+  font-size: 40px;
+  vertical-align: top;
+}
+
+.xp-subtitle {
+  font-style: italic;
+  color: #ccc;
+  margin-top: -8px;
+  margin-bottom: 5px;
+  font-size: 18px;
+}
+
+/* ===== XP LOADER ===== */
+
+.xp-loader {
+  width: 180px;
+  height: 22px;
+  border: 2px solid #b2b2b2;
+  border-radius: 7px;
+  padding: 2px 1px;
+  overflow: hidden;
+  position: relative;
+  background: #000;
+}
+
+.xp-loader-track {
+  position: absolute;
+  top: 2px;
+  left: -40px;
+  height: 16px;
+  display: flex;
+  gap: 3px;
+  animation: xpMove 2.2s linear infinite;
+}
+
+.xp-block {
+  width: 8px;
+  height: 16px;
+  background: linear-gradient(
+    to bottom,
+    #a6c8ff 0%,
+    #2e5edb 45%,
+    #1c3fa6 100%
+  );
+}
+
+@keyframes xpMove {
+  0% { left: -40px; }
+  100% { left: 180px; }
+}
+
+/* BOOT FOOTER */
+
+.xp-footer-left {
+  position: absolute;
+  bottom: 30px;
+  left: 40px;
+  color: #aaa;
+  font-size: 14px;
+}
+
+.xp-footer-right {
+  position: absolute;
+  bottom: 30px;
+  right: 40px;
+  font-weight: bold, itallic;
+  font-style: italic;
+  font-size: 24px;
+  color: white;
+}
+
+/* ================================================================================================
+                                              LOGIN SCREEN
+ ================================================================================================== */
+
+.xp-login {
+  width: 100vw;
+  height: 100vh;
+  position: relative;
+  font-family: Tahoma, sans-serif;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #3a6edc;
+  transition: filter 0.6s ease;
+  z-index: 1;
+}
+
+
+.xp-dim-layer {
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,0.55);
+  backdrop-filter: grayscale(100%);
+  z-index: 15;
+  animation: xpDimFade 0.4s ease forwards;
+}
+
+@keyframes xpDimFade {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+/* TOP BAR */
+.xp-login::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  width: 100%;
+  height: 90px;
+  background: linear-gradient(to bottom,#0029A0, #0029A0);
+}
+.xp-orange-line-top {
+  position: absolute;
+  top: 90px;
+  width: 100%;
+  height: 2px;
+  background: linear-gradient(to right, transparent, #ff6a00, transparent);
+}
+.xp-orange-line {
+  position: absolute;
+  bottom: 110px;
+  width: 100%;
+  height: 2px;
+  background: linear-gradient(to right, transparent, #ff6a00, transparent);
+  z-index: 0;
+}
+
+
+/* BOTTOM BAR */
+.xp-login::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  height: 110px;
+  background: linear-gradient(to top, #0029A0, #0029A0);
+}
+
+/* CENTER GLOW */
+.xp-login-center {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    ellipse at center,
+    rgba(255,255,255,0.35) 0%,
+    rgba(255,255,255,0.15) 25%,
+    rgba(58,110,220,1) 60%
+  );
+}
+
+/* ORANGE LINE */
+.xp-orange-line {
+  position: absolute;
+  bottom: 110px;
+  width: 100%;
+  height: 2px;
+  background: linear-gradient(to right, transparent, #ff6a00, transparent);
+  z-index: 0;
+}
+
+/* MAIN CONTENT */
+.xp-content {
+  position: relative;
+  z-index: 5;
+  display: flex;
+  align-items: center;
+  gap: 70px;
+}
+
+/* LEFT SIDE */
+.xp-left {
+  text-align: center;
+  color: white;
+}
+
+.xp-login-logo {
+  width: 250px;
+  padding-left: 50px;
+  margin-bottom: -50px;
+}
+
+.xp-login-title {
+  font-size: 48px;
+  font-weight: bold;
+  letter-spacing: -1px;
+}
+
+.xp-login-title span {
+  color: #ff6a00;
+  font-size: 32px;
+  vertical-align: top;
+}
+
+.xp-login-sub {
+  font-style: italic;
+  font-size: 18px;
+  margin-top: -5px;
+  opacity: 0.9;
+}
+
+.xp-login-text {
+  margin-top: 40px;
+  font-size: 18px;
+  opacity: 0.9;
+}
+
+/* DIVIDER */
+.xp-divider {
+  width: 1px;
+  height: 300px;
+  background: linear-gradient(to bottom, transparent, rgba(255,255,255,0.5), transparent);
+}
+
+/* ================================================================================================
+                                              USER CARD
+ ================================================================================================== */
+
+
+.xp-user-card {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 18px;
+
+  padding: 18px 28px;
+  border-radius: 10px;
+
+  background: transparent;
+  cursor: pointer;
+
+  transition: all 0.35s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+/* BLUE HOVER BAR (fade in) */
+.xp-user-card {
+  position: relative;
+  overflow: hidden;
+}
+
+.xp-user-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 10px;
+
+  /* Fade only on RIGHT side */
+  background: linear-gradient(
+    to right,
+    rgba(8, 57, 169, 0.95) 0%,
+    rgba(8, 57, 169, 0.95) 60%,
+    rgba(8, 57, 169, 0.6) 75%,
+    rgba(8, 57, 169, 0) 90%
+  );
+
+  opacity: 0;
+  transition: opacity 0.35s ease;
+  z-index: -1;
+}
+
+.xp-user-card:hover::before {
+  opacity: 1;
+}
+
+/* Hover animation */
+.xp-user-card:hover::before {
+  opacity: 1;
+  transform: scaleX(1);
+}
+
+/* AVATAR */
+.xp-user-avatar {
+  width: 72px;
+  height: 72px;
+  border-radius: 8px;
+  background: white;
+  border: 2px solid rgba(255,255,255,0.8);
+  transition: all 0.35s ease;
+}
+
+/* Yellow border glow */
+.xp-user-card:hover .xp-user-avatar {
+  border: 3px solid #ffcc00;
+  box-shadow: 0 0 10px rgba(255, 204, 0, 0.6);
+}
+
+.xp-user-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 6px;
+}
+/* NAME */
+.xp-user-name {
+  font-size: 28px;
+  color: white;
+  font-family: Tahoma, sans-serif;
+  text-shadow: 1px 1px 2px rgba(0,0,0,0.6);
+}
+
+/* ROLE */
+.xp-user-role {
+  font-size: 16px;
+  margin-top: 4px;
+  color: #0b2e91;
+  font-weight: bold;
+  transition: color 0.3s ease;
+}
+
+/* Role becomes yellow */
+.xp-user-card:hover .xp-user-role {
+  color: #ffcc00;
+}
+
+/* FOOTERS */
+/* ================================================================================================
+                                              XP DESKTOP WITH ICONS
+ ================================================================================================== */
+
+
+.xp-restart {
+  position: absolute;
+  bottom: 35px;
+  left: 40px;
+
+  display: flex;
+  align-items: center;
+  gap: 12px;
+
+  color: white;
+  font-size: 16px;
+  z-index: 6;
+}
+
+/* GREEN ICON BUTTON */
+.xp-restart-icon {
+  width: 34px;
+  height: 34px;
+  border-radius: 6px;
+
+  background-image:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='white' d='M11 2h2v5h-2zm0 15h2v5h-2zM4.22 5.64l1.42-1.42 3.54 3.54-1.42 1.42zM14.83 16.24l3.54 3.54-1.42 1.42-3.54-3.54zM2 11h5v2H2zm15 0h5v2h-5zM5.64 19.78l-1.42-1.42 3.54-3.54 1.42 1.42zM18.36 4.22l1.42 1.42-3.54 3.54-1.42-1.42z'/%3E%3C/svg%3E"),
+    linear-gradient(to bottom, #02AC05, #156c15);
+  background-size: 35px 33px, 100% 100%
+  ;
+
+  box-shadow:
+    inset 0 2px 4px rgba(255,255,255,0.6),
+    inset 0 -2px 4px rgba(0,0,0,0.4);
+
+  position: relative;
+
+  transition: all 0.2s ease;
+}
+
+/* White spinner */
+.xp-restart-icon::before {
+  content: "";
+  position: absolute;
+  inset: 8px;
+
+
+  border-radius: 50%;
+}
+
+/* ONLY ICON GLOWS */
+.xp-restart-icon:hover {
+  box-shadow:
+    inset 0 2px 6px rgba(255,255,255,0.8),
+    inset 0 -2px 6px rgba(0,0,0,0.5),
+    0 0 10px rgba(80,255,80,0.7);
+}
+
+/* Press effect */
+.xp-restart-icon:active {
+  transform: translateY(1px);
+  filter: brightness(0.8);
+}
+
+.xp-footer-text {
+  position: absolute;
+  bottom: 35px;
+  right: 40px;
+  color: white;
+  text-align: right;
+  font-size: 14px;
+  z-index: 6;
+}
+/* ================================================================================================
+                                              XP SHUTDOWN DIALOG
+ ================================================================================================== */
+
+/* OVERLAY */
+.shutdown-overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+    z-index: 9999;   /* VERY IMPORTANT */
+}
+
+/* WINDOW FRAME */
+.shutdown-window {
+  width: 350px; /* smaller like real XP */
+  height: auto;
+  border: 2px solid #001f7a;
+  background: #cfdcf3;
+  box-shadow: 0 20px 50px rgba(0,0,0,0.7);
+  overflow: hidden;
+  animation: popIn 0.18s ease;
+    z-index: 9999;   /* VERY IMPORTANT */
+}
+
+/* SUBTLE XP PIXEL GRID */
+.shutdown-window::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+
+  background-image:
+    linear-gradient(rgba(0,0,0,0.06) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0,0,0,0.06) 1px, transparent 1px);
+
+  background-size: 2px 2px;
+  opacity: 0.35;
+}
+
+/* ================================================== HEADER ====================================== */
+.shutdown-header {
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 12px;
+  font-family: inherit;
+  font-size: 20px;
+  font-weight: normal;
+  color: white;
+
+   background: radial-gradient(
+    circle at center,
+     rgb(27, 65, 179) 0%,
+    rgb(3, 44, 169) 25%,
+    rgb(0, 39, 155) 70%)
+    
+   
+}
+.shutdown-header img {
+  width: 40px;
+  
+  z-index: 100;
+}
+
+
+
+/* =============================================== BODY =============================================== */
+
+.shutdown-body {
+  padding: 22px 68px;
+  display: flex;
+  gap: 0px;
+  justify-content: space-around;
+  align-items: center;
+  border-top: linear-gradient(to right, transparent, #ff6a00, transparent);
+  background: linear-gradient(to bottom, #3a6edc, #3a6edc);
+}
+
+/* ================================================== OPTIONS ========================================== */
+
+.shutdown-option {
+  text-align: center;
+  cursor: pointer;
+  z-index: 10;
+}
+
+.shutdown-option span {
+  display: block;
+  margin-top: 8px;
+  font-size: 12px;
+  color: #ffffff;
+  text-shadow: 1px 1px 1px rgba(0,0,0,0.8);
+}
+
+/* ICON BASE */
+.shutdown-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 4px;
+  margin: 0 auto;
+
+  border: 1px solid rgba(0,0,0,0.4);
+
+  box-shadow:
+    inset 0 0 0 1px rgba(255,255,255,0.6),
+    inset 0 4px 6px rgba(255,255,255,0.4),
+    inset 0 -6px 10px rgba(0,0,0,0.35),
+    0 6px 12px rgba(0,0,0,0.45);
+
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+/* RESTART ICON */
+.shutdown-icon.restart {
+  background-image:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='white' d='M11 2h2v5h-2zm0 15h2v5h-2zM4.22 5.64l1.42-1.42 3.54 3.54-1.42 1.42zM14.83 16.24l3.54 3.54-1.42 1.42-3.54-3.54zM2 11h5v2H2zm15 0h5v2h-5zM5.64 19.78l-1.42-1.42 3.54-3.54 1.42 1.42zM18.36 4.22l1.42 1.42-3.54 3.54-1.42-1.42z'/%3E%3C/svg%3E"),
+    linear-gradient(to bottom, #02AC05, #156c15);
+  background-size: 35px 33px, 100% 100%
+}
+
+/* SHUTDOWN ICON */
+.shutdown-icon.shutdown {
+  background-image:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M18.36 6.64a9 9 0 1 1-12.73 0'/%3E%3Cline x1='12' y1='2' x2='12' y2='12'/%3E%3C/svg%3E"),
+    linear-gradient(to bottom, #ff6a6a, #c81d1d);
+  background-size: 35px 33px, 100% 100%
+}
+
+/* ===================================================FOOTER STRIP ============================= */
+
+.shutdown-footer {
+  padding: 8px 12px;
+  height: 48px;
+  text-align: right;
+
+  background: radial-gradient(
+    circle at center,
+     rgb(27, 65, 179) 0%,
+    rgb(3, 44, 169) 25%,
+    rgb(0, 39, 155) 70%)
+    
+   
+  ;
+  border: #000;
+  box-shadow:inset 0 3px 6px rgba(255,255,255,0.2);
+}
+
+/* CANCEL BUTTON */
+.shutdown-footer button {
+  padding: 3px 14px;
+  font-size: 12px;
+  border-radius: 3px;
+  border: 1px solid #7a7a7a;
+
+  background: linear-gradient(
+    to bottom,
+    #ffffff 0%,
+    #dcdcdc 100%
+  );
+
+  box-shadow: inset 0 1px 0 #fff;
+  cursor: pointer;
+}
+
+.shutdown-footer button:active {
+  background: linear-gradient(
+    to bottom,
+    #cfcfcf,
+    #ffffff
+  );
+}
+
+/* Fade login out */
+.fade-out {
+  animation: fadeOut 0.7s ease forwards;
+}
+
+@keyframes fadeOut {
+  from { opacity: 1; }
+  to { opacity: 0; }
+}
+
+/* ================================================================================================
+                                             welcome screen + fade out effect for login and boot
+ ================================================================================================== */
+
+
+.fade-out {
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+
+/* Welcome Screen (XP style) */
+.xp-welcome {
+  position: absolute;
+  inset: 0;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  font-size: 56px;
+  font-style: italic;
+  color: #ffffff;
+
+  text-shadow: 2px 2px 6px rgba(0,0,0,0.6);
+
+  animation: fadeInWelcome 0.8s ease forwards;
+  z-index: 50;
+}
+
+@keyframes fadeInWelcome {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+/* ================================================================================================
+                                             XP desktop with icons
+ ================================================================================================== */
+
+
+.xp-desktop {
+  width: 100vw;
+  height: 100vh;
+  background: url("/background.png") no-repeat center center;
+  background-size: cover;
+  position: relative;
+  overflow: hidden;
+}
+
+/* ICON AREA */
+
+.xp-icons {
+  position: absolute;
+  top: 50px;
+  left: 30px;
+  display: flex;
+
+  flex-direction: column;
+  gap: 0px;
+}
+
+.xp-icon {
+  width: 110px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+}
+
+.xp-icon-inner {
+  width: 100%;
+  height: 120px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;   /* true center */
+  gap: 8px;                  /* 🔥 use gap instead of margin */
+  border-radius: 10px;
+  transition: all 0.5s ease;
+  text-align: center;
+}
+
+.xp-icon img {
+  
+  width: 64px;
+}
+
+.xp-icon span {
+  display: block;
+  display: center;
+  margin-top: 6px;
+  font-size: 13px;
+  color: white;
+  text-shadow: 1px 1px 2px black;
+}
+
+/* 🔵 REAL WINDOWS XP HOVER */
+.xp-icon:hover .xp-icon-inner {
+  background: linear-gradient(
+    to bottom,
+    rgba(120, 159, 221, 0.35) 0%,
+    rgba(46, 101, 188, 0.35) 100%
+  );
+}
+/* ================================================================================================
+                                             Taskbar
+ ================================================================================================== */
+
+.xp-taskbar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 30px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  background: linear-gradient(
+    to bottom,
+    #3a6ee8 0%,
+    #2854b3 40%,
+    #1b4db7 70%,
+    #153e9f 100%
+  );
+}
+
+.xp-taskbar::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 45%;
+  z-index: 50;
+
+  background: linear-gradient(
+    to bottom,
+    rgba(255,255,255,0.55),
+    rgba(255,255,255,0.2),
+    transparent
+  );
+
+  pointer-events: none;
+}
+.xp-taskbar-left {
+  display: flex;
+  align-items: center;
+}
+
+.xp-task-area {
+  display: flex;
+  align-items: center;
+  margin-left: 0px;
+}
+.xp-task-area img {
+  width: 18px;
+  height: 18px;
+}
+
+.xp-start-button {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+
+  padding: 2px 10px;
+  height: 32px;
+
+  background: linear-gradient(
+    to bottom,
+    #4be34b 0%,
+    #36c936 35%,
+    #1fa61f 60%,
+    #0f7f0f 100%
+  );
+
+  border-radius: 0 18px 16px 0;
+  border: 1px solid #0a6b0a;
+
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.8),
+    inset 0 -2px 4px rgba(0,0,0,0.3);
+
+  color: white;
+  font-family: inherit;
+  font-weight: bold;
+  font-style: italic;
+  cursor: pointer;
+}
+
+.xp-start-button:hover {
+  filter: brightness(1.08);
+}
+.xp-start-button img {
+  width: 18px;
+}
+
+
+
+.xp-clock {
+  color: white;
+  font-size: 14px;
+}
+
+.xp-task-button {
+  display: flex;
+  align-items: center;
+  
+
+  padding: 4px 14px;
+  margin-left: 3px;
+
+  background: linear-gradient(
+    to bottom,
+    #6fa7f5,
+    #2e6bd3
+  );
+
+  border-radius: 4px;
+  color: white;
+  font-size: 13px;
+  cursor: pointer;
+
+  box-shadow:
+    inset 1px 1px rgba(255,255,255,0.6),
+    inset -1px -1px rgba(0,0,0,0.3);
+}
+
+.xp-task-button.active {
+  background: linear-gradient(
+    to bottom,
+    #8fc3ff,
+    #3a7ff2
+  );
+}
+
+/* ================================================================================================
+                                            sYSTEM TRAY AREA 
+ ================================================================================================== */
+
+/* RIGHT SYSTEM TRAY AREA */
+.xp-tray {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+  height: 100%;
+  padding: 0 8px;
+
+  margin-left: auto;
+  z-index: 60;
+
+  background: linear-gradient(
+    to bottom,
+    #66b6ff 0%,
+    #3c96e6 35%,
+    #2b78d1 65%,
+    #1e5fb8 100%
+  );
+
+  border-left: 1px solid rgba(0,0,0,0.45);
+
+  box-shadow:
+    inset 1px 0 0 rgba(255,255,255,0.4),
+    inset 0 1px 0 rgba(255,255,255,0.6);
+}
+.xp-tray::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  height: 45%;
+  width: 100%;
+
+  background: linear-gradient(
+    to bottom,
+    rgba(255,255,255,0.5),
+    rgba(255,255,255,0.15),
+    transparent
+  );
+
+  pointer-events: none;
+}
+
+.xp-tray-icon,
+.xp-tray-icon-static {
+  width: 18px;
+  cursor: pointer;
+  position: relative;
+}
+
+.xp-clock {
+  color: white;
+  font-size: 12px;
+  margin-left: 6px;
+}
+
+/* TOOLTIP */
+.xp-tooltip {
+  position: absolute;
+  bottom: 25px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #ede8cf;
+  padding: 5px 10px;
+  font-size: 10px;
+  border: 1px solid #999;
+  border-radius: 5px;
+
+  box-shadow: 2px 2px 6px rgba(0,0,0,0.4);
+  white-space: nowrap;
+  opacity: 0;
+  animation: xpTooltipFade 0.6s ease forwards;
+
+}
+@keyframes xpTooltipFade {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+/* XP BALLOON POPUP */
+.xp-welcome-popup {
+  position: absolute;
+  bottom: 40px;
+  right: 84px;
+
+  width: 300px;
+  padding: 14px 18px;
+
+  background: #ede8cf;
+  border: 1px solid #b8b28a;
+
+  border-radius: 10px;
+  box-shadow: 3px 5px 12px rgba(0,0,0,0.4);
+
+  font-family: Tahoma, sans-serif;
+  font-size: 10px;
+  color: #222;
+
+  opacity: 0;
+  animation: xpBalloonFade 0.6s ease forwards;
+}
+
+@keyframes xpBalloonFade {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* Balloon tail */
+.xp-welcome-popup::after {
+  content: "";
+  position: absolute;
+  bottom: -12px;
+  right: 30px;
+
+  width: 0;
+  height: 0;
+
+  border-left: 12px solid transparent;
+  border-right: 12px solid transparent;
+  border-top: 12px solid #f5f1dc;
+}
+
+/* Small shadow under tail */
+.xp-welcome-popup::before {
+  content: "";
+  position: absolute;
+  bottom: -14px;
+  right: 30px;
+
+  width: 0;
+  height: 0;
+
+  border-left: 13px solid transparent;
+  border-right: 13px solid transparent;
+  border-top: 13px solid rgba(0,0,0,0.15);
+  z-index: -1;
+}
+
+/* Title row */
+.xp-balloon-title {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-weight: bold;
+  margin-bottom: 6px;
+}
+
+.xp-balloon-title-left {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+/* Close button */
+.xp-balloon-close {
+  cursor: pointer;
+  font-weight: bold;
+  color: #666;
+}
+
+.xp-balloon-close:hover {
+  color: black;
+}
+
+/* ================================================================================================
+                                                REAL XP START MENU 
+=================================================================================================== */
+
+.xp-start-menu {
+  position: absolute;
+  bottom: 30px;
+  left: 0;
+  width: 340px;
+  height: 450px;
+  background: #ece9d8;
+  border: 2px solid #003c9e;
+  border-radius: 5px;
+  box-shadow: 6px 6px 20px rgba(0,0,0,0.6);
+  display: flex;
+  flex-direction: column;
+  z-index: 999;
+}
+
+/* HEADER */
+.xp-start-header {
+  height: 60px;
+  background: linear-gradient(to right, #1f5bd8, #2f7ef3);
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  padding: 0 10px;
+  border-radius: 5px 5px 0 0;
+  color: white;
+  font-size: 15px;
+  font-weight: bold;
+  border-bottom: 2px solid orange;
+}
+
+.xp-start-header img {
+  width: 45px;
+  height: 45px;
+  border-radius: 6px;
+  border-width: 2.2px;
+  border-color: #fff;
+}
+
+/* BODY */
+.xp-start-body {
+  flex: 1;
+  display: flex;
+}
+
+/* LEFT */
+.xp-start-left {
+  width: 55%;
+  padding: 0px;
+  background: #ffffffec;
+}
+
+/* RIGHT */
+.xp-start-right {
+  width: 45%;
+  padding: 0px;
+  background: #D3EAFF;
+  border-left: 1px solid #b0c7e8;
+}
+
+/* ITEMS */
+/* XP START ITEM (REAL STYLE) */
+.xp-start-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 6px 12px;
+  cursor: pointer;
+  transition: background 0.15s;
+  width: 100%;
+}
+
+.xp-start-item img {
+  width: 20px;
+}
+
+.xp-start-item strong {
+  font-weight: normal;
+}
+
+.xp-sub {
+  font-size: 11px;
+  color: #555;
+}
+
+/* REAL XP HOVER */
+.xp-start-item:hover {
+  background: linear-gradient(
+    to bottom,
+    #3a6edc 0%,
+    #2455c3 100%
+  );
+  width: 100%;
+  display: flex;
+  color: white;
+}
+
+.xp-start-item:hover .xp-sub {
+  color: #e0e0e0;
+}
+
+/* ALL PROGRAMS */
+.xp-all-programs {
+  margin-top: 78px;
+  padding: 8px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.xp-all-programs:hover {
+  background: linear-gradient(to bottom, #3a6edc, #1c4cb5);
+  color: white;
+  display: flex;
+}
+
+/* ================================================================================================
+                                             XP start menu footer 
+ ================================================================================================== */
+
+.xp-start-footer {
+  height: 48px;
+  background: linear-gradient(to right, #1f5bd8, #2f7ef3);
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 15px;
+  padding: 0 18px;
+}
+
+/* Footer container */
+.xp-footer-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+  color: white;
+  font-weight: normal;
+  font-style: inherit;
+  font-size: 13px;
+
+  cursor: pointer;
+}
+
+/* ICON ONLY */
+.xp-footer-btn img {
+  width: 30px;
+  height: 30px;
+
+  border-radius: 4px;
+  padding: 1px;
+  transition: all 0.15s ease;
+}
+
+/* 🔥 GLOW ONLY ICON */
+.xp-footer-btn:hover img {
+  background: rgba(255,255,255,0.25);
+  
+}
+
+/* XP Divider Line */
+.xp-start-divider {
+  height: 1px;
+  margin: 6px 10px;
+  background: linear-gradient(
+    to right,
+    #ffffff 0%,
+    #c9c6b8 50%,
+    #ffffff 100%
+  );
+}
+
+/* Submenu container */
+.xp-has-submenu {
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+}
+
+/* Arrow */
+.xp-arrow {
+  font-size: 12px;
+}
+
+/* Fly-out menu */
+.xp-submenu {
+  position: absolute;
+  top: 100;
+  left: 100%;
+  width: 220px;
+  background: #f8f8f8;
+  border: 1px solid #8a8a8a;
+  box-shadow: 3px 3px 8px rgba(0,0,0,0.4);
+  padding: 4px 0;
+  z-index: 999;
+}
+
+.xp-sub-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  padding: 6px 12px;
+  width: 100%;
+
+  box-sizing: border-box;
+  cursor: pointer;
+
+  font-size: 13px;
+  color: black;
+}
+
+/* ICON */
+.xp-sub-item img {
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+}
+
+/* TEXT */
+.xp-sub-item span {
+  flex: 1;
+}
+
+/* HOVER (XP style highlight) */
+.xp-sub-item:hover {
+  background: linear-gradient(
+    to bottom,
+    #3a6edc 0%,
+    #2455c3 100%
+  );
+  color: white;
+}
+
+
+/* ================================================================================================
+                                             XP WINDOW 
+ ================================================================================================== */
+
+.xp-explorer-window {
+  position: absolute;
+  top: 100px;
+  left: 200px;
+  width: 900px;
+  height: 550px;
+  cursor: default;
+
+  display: grid;
+  grid-template-rows:
+    30px   /* header */
+    22px   /* menu */
+    48px   /* toolbar */
+    32px   /* address */
+    1fr    /* content */
+    22px;  /* status */
+
+  background: #EDEDED;
+  border: 3px solid #003c9e;
+  border-radius: 6px;
+  box-shadow: 6px 6px 18px rgba(0,0,0,0.6);
+  overflow: hidden;
+}
+
+.xp-explorer-window.maximized {
+  top: 0 !important;
+  left: 0 !important;
+  width: 100vw;
+  height: calc(100vh - 31px);
+  border-radius: 0;
+}
+.xp-explorer-window.hidden {
+  display: none;
+}
+
+.xp-window-header {
+  height: 30px;
+  background: linear-gradient(to bottom, #3a6edc, #2455c3);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 8px;
+  color: white;
+  font-weight: bold;
+  cursor: move;
+  user-select: none;
+}
+
+.xp-title-left {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.xp-title-left img {
+  width: 18px;
+}
+
+.xp-window-controls {
+  display: flex;
+  gap: 4px;
+}
+
+.xp-btn {
+  width: 22px;
+  height: 20px;
+ background: linear-gradient(
+    to bottom,
+    #eaf3ff 0%,
+    #94bfff 30%,
+    #4585f4 60%,
+    #3980FD 100%
+  );
+   border: 1px solid #1b4db7;
+  box-shadow:
+    inset 1px 1px rgba(255,255,255,0.8),
+    inset -1px -1px rgba(0,0,0,0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  cursor: pointer;
+}
+.xp-btn:hover {
+  filter: brightness(1.1);
+}
+
+.xp-btn.close {
+  background: linear-gradient(to bottom, #ff6a6a, #c81d1d);
+  color: white;
+  border: 1px solid #7a0000;
+}
+/* ============================= */
+/* XP MENU BAR */
+/* ============================= */
+
+.xp-menu-bar {
+  height: 22px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;  /* pushes logo to right */
+
+  padding: 0 8px;
+
+  background: #EDEDED;
+  border-bottom: 1px solid #bdbdbd;
+}
+
+.xp-menu-left {
+  display: flex;
+  gap: 18px;          /* small XP spacing */
+}
+
+.xp-menu-left span {
+  font-size: 11px;
+  color: black;
+  cursor: default;
+}
+
+/* Windows logo on right */
+.xp-menu-logo {
+  width: 16px;
+  height: 16px;
+}
+/* ============================= */
+/* REAL XP EXPLORER TOOLBAR */
+/* ============================= */
+
+.xp-toolbar {
+  height: 28px;
+
+  display: flex;
+  align-items: center;
+  gap: 16px;
+
+  padding: 0 14px;
+
+  /* XP grey gradient */
+  background: linear-gradient(
+    to bottom,
+    #EDEDED 0%,
+    #EDEDED 45%,
+    #EDEDED 100%
+  );
+
+  border-bottom: 1px solid #6a6a6a;
+
+  box-shadow:
+    inset 0 1px 0 #ffffff,
+    inset 0 -1px 0 #c4c4c4;
+}
+
+/* Group Back + Forward */
+.xp-nav-group {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  border: #6a6a6a;
+}
+
+/* NAV BUTTON */
+.xp-nav-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+  font-size: 13px;
+  color: #333;
+}
+
+/* Green XP circle */
+
+
+/* Hover glow like XP */
+.xp-nav-btn:hover .xp-nav-circle {
+  filter: brightness(1.1);
+}
+
+/* Separator */
+.xp-toolbar-separator {
+  width: 1px;
+  height: 26px;
+  background: linear-gradient(
+    to bottom,
+    #ffffff,
+    #c4c4c4
+  );
+}
+
+/* ============================= */
+/* REAL XP EXPLORER TOOLBAR */
+/* ============================= */
+
+.xp-toolbar {
+  height: 48px;
+  
+
+  display: flex;
+  align-items: center;
+  gap: 16px;
+
+  padding: 0 14px;
+
+  /* XP grey gradient */
+  background: linear-gradient(
+    to bottom,
+    #EDEDED 0%,
+    #EDEDED 45%,
+    #EDEDED 100%
+  );
+
+  border-bottom: 1px solid #6a6a6a;
+
+  box-shadow:
+    inset 0 1px 0 #ffffff,
+    inset 0 -1px 0 #c4c4c4;
+}
+
+/* Group Back + Forward */
+.xp-nav-group {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+/* Navigation buttons */
+.xp-nav-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+
+  cursor: pointer;
+  font-size: 13px;
+  color: #000;
+}
+
+.xp-nav-btn img {
+  width: 32px;
+  height: 32px;
+  color: #333;
+}
+
+
+/* Separator */
+.xp-toolbar-separator {
+  width: 1px;
+  height: 26px;
+  background: linear-gradient(
+    to bottom,
+    #ffffff,
+    #c4c4c4
+  );
+}
+
+/* Toolbar items */
+.xp-toolbar-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+  font-size: 13px;
+  color: #333;
+}
+
+.xp-toolbar-item img {
+  width: 32px;
+  height: 32px;
+}
+/* ============================= */
+/* XP ADDRESS BAR */
+/* ============================= */
+
+.xp-address-bar {
+  height: 32px;
+
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  padding: 0 10px;
+
+  background: #EDEDED;
+
+  border-top: 1px solid #ffffff;
+  border-bottom: 1px solid #bdbdbd;
+}
+
+/* Address label */
+.xp-address-label {
+  font-size: 13px;
+  color: #444;
+}
+
+/* Address input wrapper */
+.xp-address-field {
+  flex: 1;
+  height: 22px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  background: white;
+
+  border: 1px solid #7f9db9;
+
+  box-shadow:
+    inset 0 1px 2px rgba(0,0,0,0.2);
+}
+
+/* Left content (icon + text) */
+.xp-address-content {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+
+  padding-left: 6px;
+  font-size: 13px;
+  color: #000;
+}
+
+.xp-address-content img {
+  width: 16px;
+  height: 16px;
+}
+
+/* Dropdown button */
+.xp-address-dropdown {
+  width: 20px;
+  height: 100%;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  font-size: 11px;
+  color: #333;
+
+  background: linear-gradient(
+    to bottom,
+    #f4f4f4 0%,
+    #dcdcdc 100%
+  );
+
+  border-left: 1px solid #7f9db9;
+
+  cursor: pointer;
+}
+
+.xp-address-dropdown:hover {
+  background: linear-gradient(
+    to bottom,
+    #eaf2ff,
+    #cbdfff
+  );
+}
+
+/* Go button */
+.xp-go-btn {
+  height: 24px;
+  padding: 0 10px;
+
+  font-size: 12px;
+
+  border: 1px solid #7f9db9;
+
+  background: linear-gradient(
+    to bottom,
+    #f4f4f4,
+    #dcdcdc
+  );
+
+  box-shadow:
+    inset 0 1px 0 #ffffff;
+
+  cursor: pointer;
+}
+
+.xp-go-btn:active {
+  background: linear-gradient(
+    to bottom,
+    #dcdcdc,
+    #f4f4f4
+  );
+}
+/* Explorer Body (THE ONLY SCROLLER) */
+.xp-explorer-body {
+  display: flex;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+/* ===========================
+   XP EXPLORER SIDEBAR
+=========================== */
+
+.xp-sidebar {
+  width: 200px;
+   height:max-content;
+  background: linear-gradient(
+    to bottom,
+    #7d8fe6 0%,
+    #4659c7 100%
+  );
+  padding: 12px;
+  box-sizing: border-box;
+
+  /* REMOVE your old border + shadow */
+  border-right: 1px solid #7a8fd8;   /* dark line */
+  box-shadow: 0px 0 0px 1px #ffffff;       /* thin white highlight */
+}
+
+/* SECTION CONTAINER */
+.xp-sidebar-section {
+  margin-bottom: 10px;
+}
+
+/* BLUE HEADER */
+.xp-sidebar-header {
+  background: linear-gradient(
+    to bottom,
+    #1f6ad4 0%,
+    #0d4ea6 100%
+  );
+  color: white;
+  font-weight: bold;
+  font-size: 14px;
+  padding: 5px 9px;
+
+  border-radius: 6px 6px 0 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.4);
+}
+
+/* Arrow */
+.xp-sidebar-arrow {
+  width: 16px;
+  height: 16px;
+  cursor: pointer;
+}
+
+/* WHITE CONTENT BOX */
+.xp-sidebar-content {
+  background: #dfe7f4;
+  border-color: #ffffff;
+  border-radius: 0 0 0px 0px;
+  padding: 8px 10px;
+  margin-top: 0px;
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.8);
+}
+
+/* Items */
+.xp-sidebar-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 10px;
+  padding: 4px 0;
+  cursor: pointer;
+}
+
+.xp-sidebar-item img {
+  width: 16px;
+  height: 16px;
+}
+
+
+
+/* ============================= */
+/* XP ABOUT CONTENT STYLING */
+/* ============================= */
+
+.xp-main-content {
+  flex: 1;
+  padding: 40px 60px;
+  height:max-content;
+  background: linear-gradient(
+    to bottom,
+    #4f5fcf 0%,
+    #6b7bdc 100%
+  );
+  color: #f3f6ff;
+}
+
+/* Main Title */
+.xp-main-content h1 {
+  font-size: 38px;
+  font-weight: bold;
+  margin-bottom: 28px;
+  letter-spacing: 0.5px;
+  text-shadow: 1px 1px 2px rgba(0,0,0,0.4);
+}
+
+/* Paragraphs */
+.xp-main-content p {
+  font-size: 16px;
+  line-height: 1.8;
+  margin-bottom: 24px;
+  max-width: 780px; /* keeps text readable */
+  text-shadow: 1px 1px 1px rgba(0,0,0,0.35);
+}
+
+/* Slight fade between sections */
+.xp-main-content p + p {
+  margin-top: 10px;
+}
+
+/* Optional subtle grain overlay (XP feel) */
+.xp-main-content::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-image:
+    linear-gradient(rgba(0,0,0,0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0,0,0,0.03) 1px, transparent 1px);
+  background-size: 2px 2px;
+  opacity: 0.4;
+}
+.xp-explorer-body::-webkit-scrollbar {
+  width: 16px;
+}
+
+.xp-explorer-body::-webkit-scrollbar-track {
+  background: #d4d0c8;
+  border-left: 1px solid #ffffff;
+}
+
+.xp-explorer-body::-webkit-scrollbar-thumb {
+  background: linear-gradient(
+    to bottom,
+    #f0f0f0 0%,
+    #c8c8c8 100%
+  );
+  border: 1px solid #808080;
+  box-shadow:
+    inset 1px 1px 0 #ffffff,
+    inset -1px -1px 0 #808080;
+}
+
+.xp-status-bar {
+  height: 22px;
+  background: #EDEDED;
+  padding-left: 8px;
+  display: flex;
+  align-items: center;
+  font-size: 12px;
+  border-top: 1px solid #ccc;
+}
+
+/*=================== */
+/* XP PDF VIEWER BODY */
+/* ============================= */
+
+.xp-pdf-container {
+  flex: 1;
+  background: #bfbfbf;
+  padding: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  overflow-y: auto;
+}
+.react-pdf__Page {
+  margin-bottom: 40px;
+  box-shadow: 0 8px 25px rgba(0,0,0,0.5);
+}
+
+.xp-pdf-frame {
+  width: 850px;
+  height: 1100px;
+  background: white;
+  border: 1px solid #7f9db9;
+
+  box-shadow:
+    0 0 0 1px #ffffff inset,
+    0 10px 25px rgba(0, 0, 0, 0.45);
+
+  border-radius: 2px;
+}
+.xp-explorer-body {
+  display: flex;
+  overflow-y: auto;
+  overflow-x: hidden;
+  background: #bfbfbf;
+}
+
+.xp-explorer-body::-webkit-scrollbar {
+  width: 16px;
+}
+
+.xp-explorer-body::-webkit-scrollbar-track {
+  background: #d4d0c8;
+  border-left: 1px solid #ffffff;
+}
+
+.xp-explorer-body::-webkit-scrollbar-thumb {
+  background: linear-gradient(
+    to bottom,
+    #f0f0f0 0%,
+    #c8c8c8 100%
+  );
+  border: 1px solid #808080;
+  box-shadow:
+    inset 1px 1px 0 #ffffff,
+    inset -1px -1px 0 #808080;
+}
+
+.xp-pdf-frame {
+  width: 80%;
+  height: 100%;
+  min-height: 900px;
+  background: white;
+  border: 1px solid #7f9db9;
+  box-shadow:
+    0 0 0 1px #ffffff inset,
+    0 10px 25px rgba(0, 0, 0, 0.45);
+}
+
+
+
+.xp-pdf-container::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-image:
+    linear-gradient(rgba(0,0,0,0.02) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0,0,0,0.02) 1px, transparent 1px);
+  background-size: 2px 2px;
+  opacity: 0.4;
+}
+
+/* XP TOOLBAR */
+.xp-toolbar {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 8px;
+  background:#EDEDED;;
+  border-bottom: 1px solid #9a9a9a;
+}
+
+/* Toolbar Buttons */
+.xp-toolbar-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 3px 8px;
+  font-size: 13px;
+  color: black;
+  cursor: pointer;
+  border: 1px solid transparent;
+}
+
+.xp-toolbar-item img {
+  width: 18px;
+  height: 18px;
+}
+
+/* Hover like XP */
+.xp-toolbar-item:hover:not(.disabled) {
+  background: linear-gradient(
+    to bottom,
+    #fff 0%,
+
+  );
+  height: 35px;
+  width: auto;
+  border: 1px solid #7a8bb7;
+  border-radius: 2px;
+}
+
+/* Disabled button */
+.xp-toolbar-item.disabled {
+  opacity: 0.4;
+  cursor: default;
+}
+
+/* Vertical separator */
+.xp-toolbar-separator {
+  width: 1px;
+  height: 22px;
+  background: linear-gradient(
+    to bottom,
+    #ffffff,
+    #9a9a9a
+  );
+  margin: 0 4px;
+}
+
+/* ============================= */
+/* OUTLOOK EXPRESS STYLE WINDOW */
+/* ============================= */
+
+.contact-window {
+  background: #ECE9D8;
+  display: flex;
+  flex-direction: column;
+
+  /* XP FRAME */
+  border: 2px solid #003c9e;
+  box-shadow:
+    inset 1px 1px 0 #ffffff,
+    inset -1px -1px 0 #7f7f7f,
+    4px 4px 10px rgba(0,0,0,0.4);
+}
+/* TITLE BAR */
+.xp-mail-title {
+  height: 30px;
+  background: linear-gradient(
+    to bottom,
+    #3a6edc 0%,
+    #2455c3 100%
+  );
+  color: white;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 8px;
+}
+
+/* MENU BAR 
+
+*/
+.xp-mail-menubar {
+  height: 22px;
+  display: flex;
+  align-items: center;
+  padding: 0 8px;
+  font-size: 12px;
+  background: #EDEDED;
+  border-bottom: 1px solid #bdbdbd;
+}
+
+/* LEFT MENU ITEMS */
+.xp-mail-menubar span {
+  margin-right: 18px;
+  cursor: default;
+}
+
+/* Push logo to right */
+.xp-mail-menubar img {
+  width: 16px;
+  height: 16px;
+  margin-left: auto;
+}
+
+/* ================= TOOLBAR ================= */
+
+.xp-mail-toolbar {
+  height: 40px;
+  display: flex;
+  align-items: center;
+  padding: 0 10px;
+  background: linear-gradient(
+    to bottom,
+    #f3f3f3 0%,
+    #e1e1e1 100%
+  );
+  border-bottom: 1px solid #9c9c9c;
+  gap: 8px;
+}
+
+/* Toolbar Button */
+.xp-mail-tool {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  padding: 3px 6px;
+  border: 1px solid transparent;
+  cursor: default;
+}
+
+/* Hover XP Effect */
+.xp-mail-tool:hover {
+  border: 1px solid #7f9db9;
+  background: #ffffff;
+}
+
+/* Disabled */
+.xp-mail-tool.disabled {
+  opacity: 0.45;
+  pointer-events: none;
+  filter: grayscale(100%);
+}
+
+/* Active */
+.xp-mail-tool:not(.disabled) {
+  opacity: 1;
+  color: #000;
+}
+
+/* Hover only when active */
+.xp-mail-tool:not(.disabled):hover {
+  border: 1px solid #7f9db9;
+  background: #ffffff;
+}
+
+/* Icons */
+.xp-mail-tool img {
+  width: 25px;
+  height: 25px;
+}
+
+/* Divider */
+.xp-mail-divider {
+  width: 1px;
+  height: 24px;
+  background: linear-gradient(
+    to bottom,
+    #ffffff,
+    #9c9c9c
+  );
+}
+
+/* LinkedIn Special */
+.xp-mail-tool.linkedin {
+  opacity: 1;
+  color: #0a66c2;
+  font-weight: bold;
+}
+/* FORM AREA */
+.xp-mail-body {
+  flex: 1;
+  padding: 10px 14px;
+  font-size: 12px;
+  background:
+    repeating-linear-gradient(
+      0deg,
+      #f2f2f2,
+      #f2f2f2 1px,
+      #ffffff 1px,
+      #ffffff 2px
+    );
+}
+
+/* ROW CONTAINER */
+.xp-mail-row {
+  display: flex;
+  align-items: center;
+  padding: 6px 0;
+  position: relative;
+}
+
+/* XP Sunken Line Effect */
+.xp-mail-row::after {
+  content: "";
+  position: absolute;
+  left: 60px;
+  right: 0;
+  bottom: 0;
+  height: 2px;
+  background:
+    linear-gradient(
+      to bottom,
+      #7f7f7f 0px,
+      #7f7f7f 1px,
+      #ffffff 1px,
+      #ffffff 2px
+    );
+}
+
+/* Label */
+.xp-mail-row label {
+  width: 60px;
+  padding-left: 4px;
+  font-size: 12px;
+}
+
+/* Input */
+.xp-mail-row input {
+  flex: 1;
+  border: none;
+  background: transparent;
+  font-size: 12px;
+  outline: none;
+  padding: 2px 4px;
+}
+
+.xp-mail-body textarea {
+  width: 100%;
+  height: 220px;
+  border: 1px solid #7f7f7f;
+  background: #ffffff;
+  resize: none;
+  font-size: 12px;
+  padding: 6px;
+  margin-top: 8px;
+
+  box-shadow:
+    inset 1px 1px 0 #7f7f7f,
+    inset -1px -1px 0 #ffffff;
+}
+
+/* STATUS BAR */
+.xp-mail-status {
+  height: 22px;
+  background: #EDEDED;
+  border-top: 1px solid #bdbdbd;
+  font-size: 11px;
+  padding-left: 8px;
+  display: flex;
+  align-items: center;
+}
+
+/* ================= XP PAINT WINDOW ================= */
+
+/* ================= XP PAINT WINDOW ================= */
+
+.xp-paint-window {
+  position: absolute;
+  width: 900px;
+  height: 600px;
+
+  background: #ece9d8;
+
+  border: 3px solid #003c9e;
+  border-radius: 6px;
+
+  box-shadow:
+    inset 1px 1px 0 #ffffff,
+    inset -1px -1px 0 #7f7f7f,
+    6px 6px 16px rgba(0,0,0,0.6);
+
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+
+  z-index: 2000;
+}
+.xp-paint-window.maximized {
+  top: 0 !important;
+  left: 0 !important;
+  width: 100vw !important;
+  height: calc(100vh - 40px) !important;
+  border-radius: 0;
+}
+/* ================= XP TITLE BAR ================= */
+
+.xp-titlebar {
+  height: 30px;
+  flex-shrink: 0;
+
+  background: linear-gradient(
+    to bottom,
+    #3a6edc 0%,
+    #2455c3 100%
+  );
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  padding: 0 6px;
+
+  color: white;
+  font-size: 13px;
+  font-weight: bold;
+
+  cursor: move;
+  user-select: none;
+}
+
+.xp-titlebar span {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.xp-paint-frame {
+  flex: 1;
+  width: 100%;
+  border: none;
+  display: block;
+}
+/* ================= XP CONTROL BUTTONS ================= */
+
+.xp-controls {
+  display: flex;
+  gap: 3px;
+}
+
+.xp-controls button {
+  width: 22px;
+  height: 22px;
+  border: 1px solid #003c74;
+  background: linear-gradient(
+    to bottom,
+    #ffffff 0%,
+    #d6e6f8 100%
+  );
+  font-size: 12px;
+  font-weight: bold;
+  padding: 0;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.xp-controls button:hover {
+  background: linear-gradient(
+    to bottom,
+    #ffffff 0%,
+    #c2d9f7 100%
+  );
+}
+.xp-controls button:active {
+  background: linear-gradient(
+    to bottom,
+    #c2d9f7 0%,
+    #ffffff 100%
+  );
+  box-shadow: inset 1px 1px 2px rgba(0, 0, 0, 0.4);
+} 
+/* =================================================
+   COMMAND PROMPT WINDOW
+================================================= */
+/* CMD WINDOW */
+
+.xp-cmd-window {
+  position: absolute;
+
+  width: 640px;
+  height: 420px;
+
+  display: grid;
+  grid-template-rows:
+    30px
+    1fr;
+
+  background: #EDEDED;
+  border: 3px solid #003c9e;
+  border-radius: 6px;
+
+  box-shadow: 6px 6px 18px rgba(0,0,0,0.6);
+
+  overflow: hidden;
+}
+
+
+/* TERMINAL BODY */
+
+.cmd-body {
+  background: black;
+
+  color: #e6e6e6;
+
+  font-family: "Lucida Console", monospace;
+  font-size: 15px;
+  font-weight: 600;
+
+  padding: 12px;
+
+  overflow-y: auto;
+
+  line-height: 1.45;
+}
+
+/* =================================================
+   CMD TEXT
+================================================= */
+
+.cmd-body div {
+  white-space: pre-wrap;
+}
+
+
+/* =================================================
+   INPUT LINE
+================================================= */
+
+.cmd-input-line {
+  display: flex;
+  align-items: center;
+}
+
+.cmd-input-line span {
+  margin-right: 6px;
+}
+
+
+/* =================================================
+   INPUT FIELD
+================================================= */
+
+.cmd-input {
+  background: transparent;
+  border: none;
+  outline: none;
+
+  color: #e6e6e6;
+
+  font-family: inherit;
+  font-size: 15px;
+
+  flex: 1;
+}
+
+
+/* =================================================
+   SCROLLBAR (XP style)
+================================================= */
+
+.cmd-body::-webkit-scrollbar {
+  width: 6px;
+}
+
+.cmd-body::-webkit-scrollbar-thumb {
+  background: #444;
+}
+
+.cmd-body::-webkit-scrollbar-track {
+  background: #000;
+}
+
+/* MUSIC WINDOW */
+
+.xp-music-window {
+  position: absolute;
+  width: 500px;
+  height: 250px;
+  background: #1f1f1f;
+  border: 3px solid #003c9e;
+  border-radius: 6px;
+  box-shadow: 6px 6px 18px rgba(0,0,0,0.6);
+  overflow: hidden;
+}
+
+/* BODY */
+
+.xp-music-body {
+  display: flex;
+  height: calc(100% - 30px);
+  padding: 15px;
+  gap: 20px;
+}
+
+/* ALBUM */
+
+.xp-album {
+  position: relative;
+  width: 200px;
+  height: 200px;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.xp-album img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.xp-song-info {
+  position: absolute;
+  bottom: 10px;
+  left: 10px;
+  color: white;
+}
+
+.xp-song-info strong {
+  display: block;
+  font-size: 18px;
+}
+
+.xp-song-info span {
+  font-size: 14px;
+  opacity: 0.8;
+}
+
+/* PLAYER CONTROLS */
+
+.xp-player {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.xp-player button {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  font-size: 40px;
+  border: none;
+  background: radial-gradient(#444, #111);
+  color: white;
+  cursor: pointer;
+}
+
+.xp-player button:hover {
+  transform: scale(1.05);
+}
+/* MUSIC BODY */
+
+.xp-music-body{
+display:flex;
+align-items:center;
+gap:40px;
+padding:20px;
+background:linear-gradient(to bottom, #1b1b1b, #434343);
+height:220px;
+}
+
+
+/* ALBUM CARD */
+
+.xp-album-card{
+
+width:200px;
+height:200px;
+
+border-radius:18px;
+overflow:hidden;
+
+position:relative;
+
+background:#000;
+border: 1px solid transparent #fff;
+
+box-shadow:
+inset 0 0 20px rgba(0,0,0,0.8),
+0 0 10px rgba(0,0,0,0.7);
+
+}
+
+.xp-album-card img{
+  width:220px;
+  height:220px;
+  object-fit:cover;
+  border-radius:16px;
+}
+
+
+/* SONG TEXT */
+
+.xp-song-overlay{
+
+position:absolute;
+bottom:12px;
+left:12px;
+
+color:white;
+
+}
+
+.xp-song-overlay strong{
+
+display:block;
+font-size:20px;
+font-weight:bold;
+
+}
+
+.xp-song-overlay span{
+
+font-size:14px;
+opacity:0.85;
+
+}
+
+
+/* ================= IPOD WHEEL ================= */
+
+.xp-ipod-wheel{
+
+width:180px;
+height:180px;
+
+border-radius:50%;
+
+background:radial-gradient(circle at 30% 30%, #444, #111);
+
+position:relative;
+
+box-shadow:
+inset 0 0 20px rgba(0,0,0,0.9),
+0 8px 20px rgba(0,0,0,0.6);
+
+display:flex;
+align-items:center;
+justify-content:center;
+
+}
+
+
+/* CENTER BUTTON */
+
+.xp-wheel-center{
+
+width:70px;
+height:70px;
+
+border-radius:50%;
+
+background:radial-gradient(circle,#3a3a3a,#111);
+
+display:flex;
+align-items:center;
+justify-content:center;
+
+font-size:26px;
+color:white;
+
+cursor:pointer;
+
+box-shadow:
+inset 0 4px 10px rgba(255,255,255,0.15),
+inset 0 -6px 12px rgba(0,0,0,0.8);
+
+}
+
+
+/* TOP BUTTON */
+
+.xp-wheel-btn.top{
+position:absolute;
+top:18px;
+left:50%;
+transform:translateX(-50%);
+font-size:22px;
+color:#aaa;
+}
+
+
+/* LEFT BUTTON */
+
+.xp-wheel-btn.left{
+position:absolute;
+left:18px;
+top:50%;
+transform:translateY(-50%);
+font-size:20px;
+color:#aaa;
+cursor:pointer;
+}
+
+
+/* RIGHT BUTTON */
+
+.xp-wheel-btn.right{
+position:absolute;
+right:18px;
+top:50%;
+transform:translateY(-50%);
+font-size:20px;
+color:#aaa;
+cursor:pointer;
+}
+
+
+/* BOTTOM BUTTON */
+
+.xp-wheel-btn.bottom{
+position:absolute;
+bottom:18px;
+left:50%;
+transform:translateX(-50%);
+font-size:22px;
+color:#aaa;
+}
+
+.xp-game-window{
+
+width:820px;
+height:520px;
+
+background:black;
+
+border-radius:6px;
+
+overflow:hidden;
+
+display:flex;
+flex-direction:column;
+
+}
+
+.xp-game-body{
+
+flex:1;
+
+}
+
+.xp-game-body iframe{
+
+width:100%;
+height:100%;
+border:none;
+
+}
+/* ============================= */
+/* PROJECT LAYOUT */
+/* ============================= */
+
+.xp-prj-layout{
+display:flex;
+height:100%;
+overflow:hidden;
+}
+
+
+/* ============================= */
+/* SIDEBAR */
+/* ============================= */
+
+.xp-prj-sidebar{
+width:220px;
+height:100vh;
+gap:5px;
+margin-top:79px;
+
+background:#0b0b0b;
+
+padding:20px 16px;
+
+display:flex;
+flex-direction:column;
+
+border-right:1px solid #1c1c1c;
+}
+
+/* ============================= */
+/* SIDEBAR HEADER */
+/* ============================= */
+
+.xp-prj-sidebar-header{
+color:#9a9a9a;
+font-size:13px;
+margin-bottom:14px;
+padding-left:8px;
+}
+
+/* ============================= */
+/* SIDEBAR LIST */
+/* ============================= */
+
+.xp-prj-sidebar-list{
+display:flex;
+flex-direction:column;
+
+}
+
+
+/* ============================= */
+/* SIDEBAR ITEM */
+/* ============================= */
+
+.xp-prj-sidebar-item{
+display:flex;
+align-items:center;
+position:relative;
+gap:20px;
+
+height:40px;
+
+padding:0 16px;
+
+border-radius:12px;
+
+color:#dcdcdc;
+font-size:15px;
+
+cursor:pointer;
+
+transition:all .25s ease;
+}
+
+/* ICON */
+
+.xp-prj-sidebar-item img{
+width:22px;
+height:22px;
+opacity:0.9;
+}
+
+
+/* HOVER */
+
+.xp-prj-sidebar-item:hover{
+background:#1a1a1a;
+color:white;
+
+}
+
+/* ACTIVE */
+
+.xp-prj-sidebar-item.active{
+background:#1a1a1a;
+color:white;
+position:relative;
+
+}
+
+/* RED ACTIVE BAR */
+
+.xp-prj-sidebar-item.active::before{
+content:"";
+position:absolute;
+
+left:-16px;
+top:5px;
+
+height:38px;
+width:4px;
+
+background:#ff0000;
+
+border-radius:3px;
+}
+
+
+/* CONTENT */
+
+.xp-prj-content{
+flex:1;
+display:flex;
+flex-direction:column;
+background:#0b0b0b;
+}
+
+
+/* HEADER */
+
+/* HEADER */
+
+.xp-prj-header{
+display:flex;
+align-items:center;
+justify-content:space-between;
+
+padding:18px 30px;
+
+border-bottom:1px solid #2a2a2a;
+
+position:relative;
+
+/* extend header over sidebar */
+width:calc(100% + 220px);
+margin-left:-220px;
+
+background:#0b0b0b;
+
+z-index:10;
+}
+.xp-prj-logo{
+display:flex;
+align-items:center;
+gap:12px;
+font-size:26px;
+font-weight:700;
+color:white;
+transition:transform .2s;
+}
+.xp-prj-logo:hover{
+  cursor:pointer;
+  transform:scale(1.04);
+
+}
+
+.xp-prj-logo img{
+width:64px;
+}
+
+
+/* SEARCH */
+
+.xp-prj-search{
+display:flex;
+align-items:center;
+background:#1b1b1b;
+border-radius:20px;
+overflow:hidden;
+width:360px;
+height:36px;
+border:1px solid #2d2d2d;
+}
+
+.xp-prj-search input{
+border:none;
+background:transparent;
+color:white;
+padding:8px 14px;
+flex:1;
+outline:none;
+}
+
+.xp-prj-search button{
+border:none;
+background:none;
+padding:6px 10px;
+cursor:pointer;
+}
+.xp-prj-search button img{
+width:18px;
+height:18px
+}
+
+
+/* SOCIAL */
+
+.xp-prj-socials{
+display:flex;
+gap:18px;
+}
+
+.xp-prj-socials img{
+width:22px;
+cursor:pointer;
+}
+
+
+/* GRID */
+
+.xp-prj-grid{
+flex:1;
+overflow-y:auto;
+display:grid;
+grid-template-columns:repeat(3,1fr);
+gap:28px;
+padding:30px;
+background:#111;
+}
+
+
+/* CARD */
+
+.xp-prj-card{
+display:flex;
+flex-direction:column;
+gap:10px;
+transition:transform .2s;
+}
+
+.xp-prj-card:hover{
+transform:scale(1.04);
+}
+
+
+/* THUMB */
+
+.xp-prj-thumb{
+position:relative;
+border-radius:12px;
+overflow:hidden;
+}
+
+.xp-prj-thumb img{
+width:100%;
+height:200px;
+object-fit:cover;
+}
+
+
+/* BADGE */
+
+.xp-prj-badge{
+position:absolute;
+bottom:10px;
+right:10px;
+background:rgba(0,0,0,.75);
+color:white;
+font-size:12px;
+padding:4px 8px;
+border-radius:6px;
+}
+
+
+/* INFO */
+
+.xp-prj-info{
+display:flex;
+align-items:center;
+gap:10px;
+}
+
+.xp-prj-avatar{
+width:34px;
+height:34px;
+border-radius:50%;
+}
+
+.xp-prj-title{
+color:white;
+font-weight:700;
+font-size:18px;
+}
+
+.xp-prj-category{
+color:#aaa;
+font-size:13px;
+}
+
+.xp-nav-btn.disabled{
+opacity:0.35;
+pointer-events:none;
+}
+
+
+.light-mode{
+background:#f3f3f3;
+color:#000;
+}
+
+.light-mode .xp-prj-content{
+background:#ffffff;
+}
+
+.light-mode .xp-prj-header{
+background:#ffffff;
+}
+
+/* PROJECT VIEW */
+
+
+.xp-project-viewer{
+display:flex;
+gap:30px;
+
+height:100%;
+overflow-y:auto;
+
+padding:30px;
+
+scroll-behavior:smooth;
+}
+/* LEFT MAIN */
+
+.xp-project-main{
+flex:1;
+min-width:0;
+}
+/* PREVIEW */
+/* PROJECT PREVIEW */
+
+.xp-project-preview{
+position:relative;
+border-radius:16px;
+overflow:hidden;
+border:2px solid transparent;
+transition:all .25s ease;
+}
+
+/* IMAGE */
+
+.xp-project-preview img{
+width:100%;
+display:block;
+height: 400px;
+}
+
+/* HOVER BORDER */
+
+.xp-project-preview:hover{
+border:2px solid #ffffff;
+box-shadow:0 0 20px rgba(255,255,255,0.15);
+}
+
+/* OPEN BUTTON */
+
+.xp-project-open{
+position:absolute;
+
+right:16px;
+bottom:16px;
+
+width:40px;
+height:40px;
+
+background:#111;
+border-radius:8px;
+
+display:flex;
+align-items:center;
+justify-content:center;
+
+opacity:0;
+transition:all .25s ease;
+cursor: pointer;
+}
+
+.xp-project-open img{
+  filter: invert(100%);
+}
+/* SHOW BUTTON ON HOVER */
+
+.xp-project-preview:hover .xp-project-open{
+opacity:1;
+}
+
+/* ICON */
+
+.xp-project-open img{
+width:18px;
+height:18px;
+}
+
+/* META */
+
+.xp-project-meta{
+display:flex;
+align-items:center;
+gap:14px;
+margin-bottom:20px;
+color:white;
+}
+
+/* TAGS */
+
+.xp-project-tags{
+display:flex;
+gap:10px;
+margin-left:auto;
+}
+
+.tag-red{
+background:#e50914;
+padding:6px 14px;
+border-radius:20px;
+color:white;
+}
+
+.tag-dark{
+background:#222;
+padding:6px 14px;
+border-radius:20px;
+color:#ccc;
+}
+
+/* DESCRIPTION */
+
+.xp-project-box{
+background:#111;
+border:1px solid #2a2a2a;
+border-radius:12px;
+padding:16px;
+margin-bottom:14px;
+color:#bbb;
+}
+
+/* SUGGESTED */
+
+.xp-project-suggested{
+width:260px;
+flex-shrink:0;
+}
+
+.xp-suggested-title{color:white;font-size:18px;
+font-weight:700;margin-bottom:14px;
+}
+
+.xp-project-viewer::-webkit-scrollbar{
+width:8px;
+}
+
+.xp-project-viewer::-webkit-scrollbar-thumb{
+background:#444;
+border-radius:10px;
+}
+
+.xp-project-viewer::-webkit-scrollbar-track{
+background:transparent;
+}
+.xp-suggested-item{
+display:flex;
+flex-direction:column;   /* makes title go below image */
+
+gap:8px;
+margin-bottom:20px;
+
+cursor:pointer;
+color:#fff;
+}
+.xp-suggested-item img{
+width:680px;
+height: 150px;
+border-radius:8px;
+}
+
+.xp-all-programs{
+padding:8px 10px;
+font-weight:600;
+cursor:pointer;
+display:flex;
+justify-content:space-between;
+align-items:center;
+}
+
+.xp-all-programs:hover{
+background:#316ac5;
+color:rgb(255, 255, 255);
+}
+
+.xp-has-submenu{
+position:relative;
+}
+
+.xp-programs-menu{
+position:absolute;
+left:100%;
+bottom:0;
+width:220px;
+background:#f3f3f3;
+border:1px solid #9a9a9a;
+box-shadow:2px 2px 4px rgba(0,0,0,0.4);
+z-index:1000;
+}
+
+.xp-program-item{
+display:flex;
+align-items:center;
+color: #000;
+gap:10px;
+padding:6px 10px;
+cursor:pointer;
+font-style: normal;
+font-size:14px;
+}
+
+.xp-program-item:hover{
+background:#316ac5;
+color:white;
+}
+
+.xp-program-item img{
+width:18px;
+height:18px;
+}
+
+.xp-notepad-window{
+width:650px;
+height:450px;
+background:#fff;
+border:2px solid #245edb;
+display:flex;
+flex-direction:column;
+}
+
+.xp-notepad-menu{
+background:#ece9d8;
+padding:4px 8px;
+display:flex;
+gap:18px;
+font-size:14px;
+border-bottom:1px solid #aaa;
+}
+
+.xp-notepad-text{
+flex:1;
+border:none;
+outline:none;
+padding:10px;
+font-family: "Courier New", monospace;
+font-size:14px;
+resize:none;
+}
+
+/* ============================
+   XP WINDOW BASE
+============================ */
+
+.xp-window {
+  background: #ece9d8;
+  border: 2px solid #0a246a;
+  box-shadow: 4px 4px 8px rgba(0,0,0,0.4);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+
+/* ============================
+   TITLE BAR
+============================ */
+
+.xp-paint-titlebar {
+  height: 30px;
+  background: linear-gradient(
+    to bottom,
+    #3a6ee8 0%,
+    #2854b3 40%,
+    #1b4db7 70%,
+    #153e9f 100%
+  );
+
+  color: white;
+  font-family: Tahoma, sans-serif;
+  font-size: 13px;
+  font-weight: bold;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  padding: 0 6px;
+  cursor: move;
+  user-select: none;
+}
+
+/* LEFT SIDE (ICON + TITLE) */
+.xp-title-left {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+
+.xp-paint-icon {
+  width: 20px;
+  height: 20px;
+}
+
+
+/* ============================
+   WINDOW CONTROLS
+============================ */
+
+.xp-paint-controls {
+  display: flex;
+  gap: 3px;
+}
+
+.xp-paint-controls button {
+  width: 26px;
+  height: 20px;
+
+  border: 1px solid #0a246a;
+  background: linear-gradient(
+    to bottom,
+    #eaf3ff 0%,
+    #94bfff 30%,
+    #4585f4 60%,
+    #3980FD 100%
+  );
+
+  font-size: 12px;
+  font-weight: bold;
+  cursor: pointer;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.xp-paint-controls button:hover {
+  background: linear-gradient(
+    to bottom,
+    #ffffff,
+    #dbe9ff
+  );
+}
+.xp-paint-controls button.close-btn {
+  color: tomato;
+}
+
+.xp-paint-controls button:active {
+  background: #b6cdf2;
+}
+
+.xp-close {
+  background: linear-gradient(
+    to bottom,
+    #ff7a7a,
+    #e81123
+  );
+  color: white;
+  border: 1px solid #7a0000;
+}
+
+.xp-close:hover {
+  background: #ff3b3b;
+}
+
+
+/* ============================
+   CONTENT AREA
+============================ */
+
+.xp-paint-content {
+  flex: 1;
+  background: #ffffff;
+  border-top: 1px solid #808080;
+  display: flex;
+  overflow: hidden;
+}
+
+
+/* ============================
+   IFRAME FIX
+============================ */
+
+.xp-paint-content iframe {
+  width: 100%;
+  height: 100%;
+  border: none;
+}
