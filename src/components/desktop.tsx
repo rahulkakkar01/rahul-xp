@@ -35,7 +35,7 @@ const [paintPosition, setPaintPosition] = useState({ x: 400, y: 200 })
 const [aboutMaximized, setAboutMaximized] = useState(false)
 const [resumeMaximized, setResumeMaximized] = useState(false)
 const [contactMaximized, setContactMaximized] = useState(false)
-const [isActive, setIsActive] = useState(true)
+const [_, setIsActive] = useState(true)
 const [aboutPosition, setAboutPosition] = useState({ x: 200, y: 100 })
 const [resumePosition, setResumePosition] = useState({ x: 300, y: 150 })
 const [contactPosition, setContactPosition] = useState({ x: 350, y: 180 })
@@ -69,7 +69,7 @@ const [shutdown, setShutdown] = useState(false)
 
 const balloonAudioRef = useRef<HTMLAudioElement | null>(null)
 const startupAudioRef = useRef<HTMLAudioElement | null>(null)
-const nodeRef = useRef<HTMLDivElement>(null)
+
 
 
 
