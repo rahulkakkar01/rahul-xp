@@ -1,16 +1,18 @@
-import { Routes, Route } from "react-router-dom"
+import { useState } from "react"
 import LoginScreen from "./components/loginscreen"
 import BootScreen from "./components/bootscreen"
 import Desktop from "./components/desktop"
 
-function App() {
+export type Stage = "boot" | "login" | "desktop"
+
+export default function App() {
+  const [stage, setStage] = useState<Stage>("boot")
+
   return (
-    <Routes>
-      <Route path="/" element={<BootScreen />} />
-      <Route path="/login" element={<LoginScreen />} />
-      <Route path="/desktop" element={<Desktop />} />
-    </Routes>
+    <>
+      {stage === "boot"    && <BootScreen  onDone={() => setStage("login")} />}
+      {stage === "login"   && <LoginScreen onDone={() => setStage("desktop")} />}
+      {stage === "desktop" && <Desktop     onLogoff={() => setStage("login")} />}
+    </>
   )
 }
-
-export default App

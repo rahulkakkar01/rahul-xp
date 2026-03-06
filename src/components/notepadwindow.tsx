@@ -10,26 +10,28 @@ interface Props {
   setPosition: (pos: { x: number; y: number }) => void
 }
 
+function safeGetStorage(key: string): string {
+  try { return localStorage.getItem(key) ?? "" } catch { return "" }
+}
+
+function safeSetStorage(key: string, value: string): void {
+  try { localStorage.setItem(key, value) } catch { /* incognito / blocked */ }
+}
+
 export default function NotepadWindow({
-  onClose,
-  onMinimize,
-  onMaximize,
-  isMaximized,
-  position,
-  setPosition
+  onClose, onMinimize, onMaximize, isMaximized, position, setPosition
 }: Props) {
 
   const nodeRef = useRef<HTMLDivElement>(null)
   const [text, setText] = useState("")
 
   useEffect(() => {
-    const saved = localStorage.getItem("xp-notepad")
-    if (saved) setText(saved)
+    setText(safeGetStorage("xp-notepad"))
   }, [])
 
   const saveText = (value: string) => {
     setText(value)
-    localStorage.setItem("xp-notepad", value)
+    safeSetStorage("xp-notepad", value)
   }
 
   return (
@@ -39,31 +41,21 @@ export default function NotepadWindow({
       bounds="parent"
       disabled={isMaximized}
       position={isMaximized ? { x: 0, y: 0 } : position}
-      onStop={(_, data) => {
-        setPosition({ x: data.x, y: data.y })
-      }}
+      onStop={(_, data) => { setPosition({ x: data.x, y: data.y }) }}
     >
-      <div
-        ref={nodeRef}
-        className={`xp-notepad-window ${isMaximized ? "maximized" : ""}`}
-      >
+      <div ref={nodeRef} className={`xp-notepad-window ${isMaximized ? "maximized" : ""}`}>
 
         {/* TITLE BAR */}
         <div className="xp-window-header">
-
           <div className="xp-title-left">
-            <img  className="xp-notepad-icon" src="/notepad.png" />
+            <img className="xp-notepad-icon" src="/notepad.png" />
             <span>Your Notepad</span>
           </div>
-
           <div className="xp-window-controls">
             <div className="xp-btn" onClick={onMinimize}>—</div>
-            <div className="xp-btn" onClick={onMaximize}>
-              {isMaximized ? "❐" : "□"}
-            </div>
+            <div className="xp-btn" onClick={onMaximize}>{isMaximized ? "❐" : "□"}</div>
             <div className="xp-btn close" onClick={onClose}>✕</div>
           </div>
-
         </div>
 
         {/* MENU */}
@@ -79,7 +71,7 @@ export default function NotepadWindow({
         <textarea
           className="xp-notepad-text"
           value={text}
-          onChange={(e) => saveText(e.target.value)}
+          onChange={e => saveText(e.target.value)}
           placeholder="Leave a message for Rahul..."
         />
 

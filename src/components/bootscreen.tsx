@@ -1,38 +1,26 @@
 import { useEffect, useState } from "react"
-import { useNavigate } from "react-router-dom"
 import "../index.css"
 
-export default function BootScreen() {
+interface Props {
+  onDone: () => void
+}
 
-  const navigate = useNavigate()
+export default function BootScreen({ onDone }: Props) {
   const [fadeOut, setFadeOut] = useState(false)
 
   useEffect(() => {
-
-    const fadeTimer = setTimeout(() => {
-      setFadeOut(true)
-    }, 4300)
-
-    const navTimer = setTimeout(() => {
-      navigate("/login")
-    }, 5000)
-
+    const fadeTimer = setTimeout(() => setFadeOut(true), 4300)
+    const doneTimer = setTimeout(() => onDone(), 5000)
     return () => {
       clearTimeout(fadeTimer)
-      clearTimeout(navTimer)
+      clearTimeout(doneTimer)
     }
-
-  }, [navigate])
+  }, [onDone])
 
   return (
     <div className="xp-boot crt">
-
       <div id="boot-screen">
-        <img
-          src="/boot.png"
-          alt="Rahul XP"
-          className="boot-logo"
-        />
+        <img src="/boot.png" alt="Rahul XP" className="boot-logo" />
       </div>
 
       <div className="xp-loader">
@@ -52,7 +40,6 @@ export default function BootScreen() {
       </div>
 
       <div className={`boot-fade ${fadeOut ? "active" : ""}`} />
-
     </div>
   )
 }

@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react"
-import { useNavigate } from "react-router-dom"
+
 import "../index.css"
 import AboutWindow from "./aboutcomponent"
 import ResumeWindow from "./resumewindow";
@@ -10,11 +10,14 @@ import MusicPlayerWindow from "./musicplayerwindow"
 
 import ProjectsWindow from "./projectwindow"
 import NotepadWindow from "./notepadwindow"
+import ErrorBoundary from "./errorboundary"
 
 
 
 
-export default function Desktop() {
+interface DesktopProps { onLogoff: () => void }
+
+export default function Desktop({ onLogoff }: DesktopProps) {
 const [showWelcome, setShowWelcome] = useState(false)
 const [showTooltip, setShowTooltip] = useState(false)
 const [crtOn, setCrtOn] = useState(true)
@@ -35,7 +38,6 @@ const [paintPosition, setPaintPosition] = useState({ x: 400, y: 200 })
 const [aboutMaximized, setAboutMaximized] = useState(false)
 const [resumeMaximized, setResumeMaximized] = useState(false)
 const [contactMaximized, setContactMaximized] = useState(false)
-const [_, setIsActive] = useState(true)
 const [aboutPosition, setAboutPosition] = useState({ x: 200, y: 100 })
 const [resumePosition, setResumePosition] = useState({ x: 300, y: 150 })
 const [contactPosition, setContactPosition] = useState({ x: 350, y: 180 })
@@ -49,10 +51,7 @@ const [cmdPosition, setCmdPosition] = useState({ x: 250, y: 120 })
 const [showMusic, setShowMusic] = useState(false)
 const [musicMinimized, setMusicMinimized] = useState(false)
 const [musicMaximized, setMusicMaximized] = useState(false)
-const [musicPosition, setMusicPosition] = useState({
-  x: window.innerWidth - 500,
-  y: 0
-})
+const [musicPosition, setMusicPosition] = useState({ x: 0, y: 0 })
 
 const [showProjectsWindow, setShowProjectsWindow] = useState(false)
 const [projectsMinimized, setProjectsMinimized] = useState(false)
@@ -63,7 +62,6 @@ const [showNotepad, setShowNotepad] = useState(false)
 const [notepadMinimized, setNotepadMinimized] = useState(false)
 const [notepadMaximized, setNotepadMaximized] = useState(false)
 const [notepadPosition, setNotepadPosition] = useState({ x: 200, y: 120 })
-const navigate = useNavigate()
 const [shutdown, setShutdown] = useState(false)
 
 const balloonAudioRef = useRef<HTMLAudioElement | null>(null)
@@ -95,21 +93,30 @@ useEffect(() => {
 }, [showStartMenu])
 
 useEffect(() => {
+  const alreadyShown = (() => { try { return sessionStorage.getItem("xp-cmd-shown") === "1" } catch { return false } })()
+  if (alreadyShown) return
   const timer = setTimeout(() => {
     setShowCmd(true)
-  }, 3500) // delay in milliseconds
-
+    try { sessionStorage.setItem("xp-cmd-shown", "1") } catch { /* blocked */ }
+  }, 3500)
   return () => clearTimeout(timer)
 }, [])
   /* -----------------------------
      PRELOAD SOUNDS
   ----------------------------- */
   useEffect(() => {
-    balloonAudioRef.current = new Audio("/windows-xp-balloon-sound.mp3")
-    balloonAudioRef.current.volume = 1
+    const balloon = new Audio("/windows-xp-balloon-sound.mp3")
+    balloon.volume = 1
+    balloonAudioRef.current = balloon
 
-    startupAudioRef.current = new Audio("/windows-xp-startup.mp3")
-    startupAudioRef.current.volume = 0.6
+    const startup = new Audio("/windows-xp-startup.mp3")
+    startup.volume = 0.6
+    startupAudioRef.current = startup
+
+    return () => {
+      balloon.pause()
+      startup.pause()
+    }
   }, [])
 
   /* -----------------------------
@@ -122,6 +129,11 @@ useEffect(() => {
         setShowWelcome(true)
       }
     }
+  }, [])
+
+  /* Initialise music player position after mount (avoids window.innerWidth at module level) */
+  useEffect(() => {
+    setMusicPosition({ x: window.innerWidth - 500, y: 0 })
   }, [])
 
   /* -----------------------------
@@ -204,6 +216,7 @@ return (
     </div>
     {/* ================= ABOUT WINDOW ================= */}
       {showAboutWindow && !aboutMinimized && (
+        <ErrorBoundary name="About Me">
         <AboutWindow
             onClose={() => {
               setShowAboutWindow(false)
@@ -212,7 +225,7 @@ return (
             onMinimize={() => setAboutMinimized(true)}
             onMaximize={() => setAboutMaximized(prev => !prev)}
             isMaximized={aboutMaximized}
-            setActive={() => setIsActive(true)}
+            setActive={() => {}}
             hidden={aboutMinimized}
             position={aboutPosition}
             setPosition={setAboutPosition}
@@ -221,11 +234,13 @@ return (
               setResumeMinimized(false)
             }}
           />
+        </ErrorBoundary>
       )}
 
       {/* ================= RESUME WINDOW ================= */}
         {showResumeWindow && !resumeMinimized && (
-          <ResumeWindow
+          <ErrorBoundary name="Resume">
+        <ResumeWindow
             onClose={() => {
               setShowResumeWindow(false)
               setResumeMinimized(false)
@@ -233,16 +248,18 @@ return (
             onMinimize={() => setResumeMinimized(true)}
             onMaximize={() => setResumeMaximized(prev => !prev)}
             isMaximized={resumeMaximized}
-            setActive={() => setIsActive(true)}
+            setActive={() => {}}
             hidden={resumeMinimized}
             position={resumePosition}
             setPosition={setResumePosition}
           />
+        </ErrorBoundary>
         )}
 
       {/* ================= CONTACT WINDOW ================= */}
       {showContactWindow && !contactMinimized && (
-  <ContactWindow
+  <ErrorBoundary name="Contact">
+        <ContactWindow
     onClose={() => setShowContactWindow(false)}
     onMinimize={() => setContactMinimized(true)}
     onMaximize={() => setContactMaximized(prev => !prev)}
@@ -250,6 +267,7 @@ return (
     position={contactPosition}
     setPosition={setContactPosition}
   />
+        </ErrorBoundary>
   
 
   
@@ -257,7 +275,8 @@ return (
 
 {/* ================= PAINT WINDOW ================= */}
 {showPaint && !paintMinimized && (
-  <PaintWindow
+  <ErrorBoundary name="Paint">
+        <PaintWindow
     onClose={() => {
       setShowPaint(false)
       setPaintMinimized(false)
@@ -268,11 +287,13 @@ return (
     position={paintPosition}
     setPosition={setPaintPosition}
   />
+        </ErrorBoundary>
 )}
 
 {/* ================= CMD WINDOW ================= */}
 {showCmd && !cmdMinimized && (
-  <CmdWindow
+  <ErrorBoundary name="CMD">
+        <CmdWindow
     onClose={() => {
       setShowCmd(false)
       setCmdMinimized(false)
@@ -288,10 +309,12 @@ return (
     openContact={() => setShowContactWindow(true)}
     openPaint={() => setShowPaint(true)}
   />
+        </ErrorBoundary>
 )}
 {/* ================= MUSIC PLAYER WINDOW ================= */}
 {showMusic && !musicMinimized && (
-  <MusicPlayerWindow
+  <ErrorBoundary name="Music Player">
+        <MusicPlayerWindow
     onClose={() => setShowMusic(false)}
     onMinimize={() => setMusicMinimized(true)}
     onMaximize={() => setMusicMaximized(prev => !prev)}
@@ -299,13 +322,15 @@ return (
     position={musicPosition}
     setPosition={setMusicPosition}
   />
+        </ErrorBoundary>
 )}
 
 
 {/* ================= PROJECTS WINDOW ================= */}
 
             {showProjectsWindow && !projectsMinimized && (
-              <ProjectsWindow
+              <ErrorBoundary name="Projects">
+        <ProjectsWindow
                 onClose={() => {
                   setShowProjectsWindow(false)
                   setProjectsMinimized(false)
@@ -313,16 +338,18 @@ return (
                 onMinimize={() => setProjectsMinimized(true)}
                 onMaximize={() => setProjectsMaximized(prev => !prev)}
                 isMaximized={projectsMaximized}
-                setActive={() => setIsActive(true)}
+                setActive={() => {}}
                 hidden={projectsMinimized}
                 position={projectsPosition}
                 setPosition={setProjectsPosition}
               />
+        </ErrorBoundary>
             )}
 
       {/* ================= NOTEPAD WINDOW ================= */}
       {showNotepad && !notepadMinimized && (
-          <NotepadWindow
+          <ErrorBoundary name="Notepad">
+        <NotepadWindow
             onClose={()=>{
               setShowNotepad(false)
               setNotepadMinimized(false)
@@ -333,6 +360,7 @@ return (
             position={notepadPosition}
             setPosition={setNotepadPosition}
           />
+        </ErrorBoundary>
         )}
 
      {/* ================= TASKBAR ================= */}
@@ -561,7 +589,7 @@ return (
           Command Prompt
         </div>
 
-        <div className="xp-start-item" onClick={() => window.open("https://drive.google.com/file/d/17802345678901234567890123456789/view?usp=sharing", "_blank")}>
+        <div className="xp-start-item" onClick={() => window.open("YOUR_GOOGLE_DRIVE_RESUME_LINK", "_blank")}>
           <img src="/resume.webp" />
           My Resume
         </div>
@@ -574,7 +602,7 @@ return (
    <div className="xp-start-footer">
   <div
       className="xp-footer-btn logoff"
-      onClick={() => navigate("/login")}
+      onClick={onLogoff}
     >
     <img src="/logoff.webp" />
     <span>Log Off</span>

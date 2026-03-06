@@ -325,13 +325,13 @@ const refresh = () => {
                     <div className="xp-prj-socials">
 
                         <img src="/l_linked.webp"
-                        onClick={() => window.open("https://linkedin.com", "_blank")} />
+                        onClick={() => window.open("https://www.linkedin.com/in/rahul-kakkar-416757264/", "_blank")} />
 
                         <img src="/l_insta.webp"
-                        onClick={() => window.open("https://instagram.com", "_blank")} />
+                        onClick={() => window.open("https://www.instagram.com/rahulkakkar_04", "_blank")} />
 
                         <img src="/l_github.webp"
-                        onClick={() => window.open("https://github.com", "_blank")} />
+                        onClick={() => window.open("https://github.com/rahulkakkar01", "_blank")} />
 
                     </div>
 
