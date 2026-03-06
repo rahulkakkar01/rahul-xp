@@ -7,7 +7,7 @@ import ContactWindow from "./contactwindow";
 import PaintWindow from "./paintwindow"
 import CmdWindow from "./cmdwindow"
 import MusicPlayerWindow from "./musicplayerwindow"
-import RoadRashWindow from "./roadrashwindow"
+
 import ProjectsWindow from "./projectwindow"
 import NotepadWindow from "./notepadwindow"
 
@@ -53,8 +53,7 @@ const [musicPosition, setMusicPosition] = useState({
   x: window.innerWidth - 500,
   y: 0
 })
-const [showRoadRash,setShowRoadRash] = useState(false)
-const [roadRashPosition,setRoadRashPosition] = useState({x:200,y:100})
+
 const [showProjectsWindow, setShowProjectsWindow] = useState(false)
 const [projectsMinimized, setProjectsMinimized] = useState(false)
 const [projectsMaximized, setProjectsMaximized] = useState(false)
@@ -302,19 +301,6 @@ return (
   />
 )}
 
-{/* ================= ROAD RASH WINDOW ================= */}
-{showRoadRash && (
-
-<RoadRashWindow
-onClose={()=>setShowRoadRash(false)}
-onMinimize={()=>{}}
-onMaximize={()=>{}}
-isMaximized={false}
-position={roadRashPosition}
-setPosition={setRoadRashPosition}
-/>
-
-)}
 
 {/* ================= PROJECTS WINDOW ================= */}
 
@@ -673,15 +659,7 @@ setPosition={setRoadRashPosition}
              Music Player
           </div>
         )}
-        {showRoadRash && (
-          <div
-            className={`xp-task-button `}
-            onClick={() => {}}
-          >
-            <img src="/roaddash.jpg" />
-             Road Rash
-          </div>
-        )}
+        
 
         {showProjectsWindow && (
         <div

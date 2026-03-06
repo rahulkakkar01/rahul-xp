@@ -136,7 +136,7 @@ const refresh = () => {
       bounds="parent"
       disabled={isMaximized}
       position={isMaximized ? { x: 0, y: 0 } : position}
-      onStop={(e, data) => {
+      onStop={(_, data) => {
         if (!isMaximized) {
           setPosition({ x: data.x, y: data.y })
         }
