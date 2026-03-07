@@ -65,7 +65,7 @@ export default function ResumeWindow({
         <div className="xp-window-header">
           <div className="xp-title-left">
             <img src="/resume.webp" />
-            <span>Finalresume.pdf</span>
+            <span>RahulKakkar.pdf</span>
           </div>
 
           <div className="xp-window-controls">
@@ -112,7 +112,7 @@ export default function ResumeWindow({
             className="xp-toolbar-item"
             onClick={() => {
               const link = document.createElement("a")
-              link.href = "/Finalresume.pdf"
+              link.href = "/RahulKakkar.pdf"
               link.download = "Rahul_Kakkar_Resume.pdf"
               link.click()
             }}
@@ -123,7 +123,7 @@ export default function ResumeWindow({
 
           <div
             className="xp-toolbar-item"
-            onClick={() => window.open("/Finalresume.pdf")}
+            onClick={() => window.open("/RahulKakkar.pdf")}
           >
             <img src="/print.webp" />
             <span>Print</span>
@@ -151,7 +151,7 @@ export default function ResumeWindow({
           <div className="xp-address-field">
             <div className="xp-address-content">
               <img src="/projects.png" />
-              <span>Documents/Finalresume.pdf</span>
+              <span>Documents/RahulKakkar.pdf</span>
             </div>
           </div>
         </div>
@@ -160,7 +160,7 @@ export default function ResumeWindow({
         <div className="xp-explorer-body">
           <div className="xp-pdf-container">
             <Document
-              file="/Finalresume.pdf"
+              file="/RahulKakkar.pdf"
               onLoadSuccess={onDocumentLoadSuccess}
             >
               {Array.from(new Array(numPages), (_, index) => (
